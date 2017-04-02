@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.qas.mapper.StudentMapper">
+	<select id="findStudentByStudent" parameterType="Student"
+		resultType="Student">
+		select * from Student where sNo=#{sNo} and sPwd=#{sPwd}
+	</select>
+	<update id="changePwd">
+		update student set sPwd=#{param1} where
+		sNo=#{param2}
+	</update>
+	<resultMap type="TreeNode" id="classResult">
+		<id property="id" column="classesId" />
+		<result property="text" column="sNo" />
+
+	</resultMap>
+	<select id="selcetSIdByClassId" resultType="TreeNode" resultMap="classResult">
+		select * from student where classesId=#{id}
+	</select>
+</mapper>

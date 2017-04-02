@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间是映射接口的全类名 -->
+<mapper namespace="com.yc.qas.mapper.StudentScoreMapper">
+
+	<select id="selcetStuByClassId" parameterType="int" resultType="StudentScore">
+		select st.sNo,st.sName,t.timid,t.timName,sc.sGrade from student
+		st,timetable t, score sc where st.sno=sc.sno and sc.timid=t.timid and
+		st.classesId=#{param1}
+		and t.timid in(select timId from teaching where tId=#{param2} )
+	</select>
+</mapper>

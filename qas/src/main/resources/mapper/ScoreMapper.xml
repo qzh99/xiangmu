@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.qas.mapper.ScoreMapper">
+	<select id="selcetStuByClassId" resultType="StudentScore"
+		parameterType="int">
+		select st.sNo,st.sName,t.timid,t.timName,sc.sGrade from
+		student st,timetable
+		t, score sc where st.sno=sc.sno and
+		sc.timid=t.timid and
+		st.classesid=#{param1}
+		and t.timid in(select timId
+		from teaching where tId=#{param2} )
+	</select>
+
+	<update id="addScore" parameterType="java.util.List">
+
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update score
+			<set>
+				sGrade=#{item.sGrade},
+				sAuthor=#{item.sAuthor},
+				sTime=sysDate
+			</set>
+			where sNo=#{item.sNo} and timId=#{item.timId}
+		</foreach>
+
+	</update>
+
+	<select id="studentSelectCourse" parameterType="int" resultType="Timetable">
+		select t.* from timetable t,score s where t.timid=s.timid and
+		s.sno=#{param1}
+	</select>
+	<insert id="studnetAddScore">
+		INSERT INTO score(sNo,timId,sGrade)
+		<foreach collection="list" item="item" index="index"
+			separator=" UNION ALL ">
+			SELECT #{item.sNo}, #{item.timId},0
+			FROM DUAL
+		</foreach>
+	</insert>
+
+</mapper>

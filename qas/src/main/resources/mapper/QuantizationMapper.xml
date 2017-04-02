@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间是映射接口的全类名 -->
+<mapper namespace="com.yc.qas.mapper.QuantizationMapper">
+	<select id="selectLists" resultType="Quantization">
+		select * from Quantization
+	</select>
+
+
+	<update id="updateQuantization" parameterType="List">
+
+		update Quantization
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="qName=case" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.qId!=null">
+						when qId=#{i.qId} then #{i.qName}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="qScore=case" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.qScore!=null">
+						when qId=#{i.qId} then #{i.qScore}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="list" separator="or" item="i" index="index">
+			qId=#{i.qId}
+		</foreach>
+
+	</update>
+
+	<delete id="deleteQuantization">
+		delete from Quantization where qId in
+		<foreach collection="array" item="i" open="(" close=")"
+			separator=",">
+			#{i}
+		</foreach>
+	</delete>
+
+	<insert id="insertQuantization">
+		insert into
+		Quantization(qId,qName,qScore)
+		values(seq_Quantization_qId.nextval,#{arg0},#{arg1})
+	</insert>
+
+</mapper>

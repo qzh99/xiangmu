@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.qas.mapper.AppraiseAndStudentUnionMapper">
+
+	<insert id="addMessagesForStudent">
+		INSERT INTO appraise(sNo,qId,author,aTime)
+		<foreach collection="list" item="item" index="index"
+			separator=" UNION ALL ">
+			SELECT #{item.sNo}, #{item.qId}, #{item.author }, sysDate
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<!-- <insert id="addMessagesForStudent" parameterType="java.util.ArrayList"> 
+		INSERT ALL <foreach collection="list" item="item" index="index"> INTO appraise(stuId,qId,author,aTime) 
+		VALUES(#{item.stuId},#{item.qId},#{item.author},sysDate) </foreach> SELECT 
+		1 FROM DUAL </insert> -->
+	<delete id="deleteMessagesForStudent">
+		delete appraise where sNo in
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item.sNo}
+		</foreach>
+		and qId in
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			 #{item.qId}
+		</foreach>
+	</delete>
+</mapper>

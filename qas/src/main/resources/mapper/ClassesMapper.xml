@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.qas.mapper.ClassesMapper">
+
+	<resultMap type="TreeNode" id="classResult">
+		<id property="id" column="cId" />
+		<result property="text" column="cName" />
+
+	</resultMap>
+	<select id="selcetAllClass" resultType="TreeNode" resultMap="classResult">
+		select * from classes
+	</select>
+	
+	<resultMap type="TreeNode" id="Result">
+		<id property="id" column="cId" />
+		<result property="text" column="cName" />
+
+	</resultMap>
+	<select id="teacherSelcetClass" resultType="TreeNode" resultMap="Result">
+		select c.* from classes c,teaching t where c.cid=t.cid and t.tid=#{arg0}
+	</select>
+</mapper>

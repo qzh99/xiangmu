@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间是映射接口的全类名 -->
+<mapper namespace="com.yc.qas.mapper.StudentScoreMapper">
+
+	<select id="selectStudnetAppraiseBySno" parameterType="int"
+		resultType="StudentAppraise">
+		select  s.sName,q.qid,q.qName,q.qScore sum ,a.author,a.aTime
+		from student s,Quantization q,appraise a where s.sNo=a.sNo and
+		a.qid=q.qid and s.sno=#{arg0}
+	</select>
+</mapper>

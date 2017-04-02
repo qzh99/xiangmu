@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.qas.mapper.StudentUnionMapper">
+	<select id="findStudentUnion" parameterType="StudentUnion" resultType="StudentUnion">
+	    select * from StudentUnion where  suId=#{suId} and suPwd=#{suPwd}
+	</select>
+	
+	<update id="changePwd">
+		update studentUnion set suPwd=#{param1} where suId=#{param2}
+	</update>
+	
+</mapper>
