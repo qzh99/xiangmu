@@ -1,0 +1,145 @@
+<table id="goods_data"></table>
+<div id="goods_op1" style="height:30px">
+	<a href="javascript:openDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" style="float:left">添加</a>  
+	<div class="datagrid-btn-separator"></div>
+	<a href="javascript:" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="float:left">删除</a> 
+	<div class="datagrid-btn-separator"></div>
+	<label>请选择商品类型：</label><select name="goods_select_type" id="goods_select_type">
+		<option value="-1">--请选择--</option>
+	</select>&nbsp;
+	<label>请输入商品名称：</label><input type="text" name="goods_select_gname" id="goods_select_gname"/>
+	<label>请输入店铺名：</label><input type="text" name="goods_select_store" id="goods_select_store"/>
+	&nbsp; <a href="javascript:comboSearch()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查找</a> 
+</div>
+<!-- 添加商品信息的操作框 -->
+<div id="goods_op2" class="easyui-dialog" title="添加商品信息" data-options="iconCls:'icon-add',resizable:true,modal:true,fit:true,closed:true">
+	<form>
+		<ul>
+			<li>
+				<span>商品名:</span> 
+				<input type="text" name="goods_name" id="goods_name" placeholder="" required="required" />
+			</li>
+			<li>
+				<span>窝窝价:</span> 
+				<input type="number" name="goods_wowoprice" id="goods_wowoprice" placeholder="" required="required" />
+				<span>原价:</span> 
+				<input type="number" name="goods_price" id="goods_price" placeholder="" required="required" />
+			</li>
+			<li>
+				<span>图片:	</span> 
+				<input type="file" multiple="multiple" id="goods_pic" name="goods_pic"/>
+			</li>
+			<li>
+				<span>描述：</span> 
+				<textarea rows="10px" cols="80px" id="goods_mark"></textarea>
+			</li>
+		</ul>
+	</form>
+	<div id="goods_add">
+		<a href="javascript:addGoods()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+	</div>
+</div>
+<script type="text/javascript">
+//组合查询
+var aid;
+function comboSearch(){
+	var type = $.trim($("#goods_select_type").val());
+	var gname = $.trim($("#goods_select_gname").val());
+	var sname = $.trim($("#goods_select_store").val());
+	$.post("../../goodsServlet",{op:"comboSearch",type:type,gname:gname,sname:sname},function(data){
+		
+	});
+}
+
+$(function(){
+	$.post("../../goodsTypeServlet",{op:"findAllTypes"},function(data){
+		$.each(data,function(index,item){
+			$("#goods_type").append($("<option value='"+item.tid+"'>"+item.tname+"</option>"));
+			$("#goods_select_type").append($("<option value='"+item.tid+"'>"+item.tname+"</option>"));
+		});
+	},"json");
+	
+	
+	$.post("../../adminInfoServlet",{op:"getLoginInfo"},function(data){
+		aid=data.aid;
+	},"json");
+});
+var datagrid;
+datagrid = $('#goods_data').datagrid({   
+    url:'../../goodsServlet',
+    queryParams:{op:"findGoods"},//额外的参数
+    loadMSG:"数据加载中...",//还没加载出来的时候要显示的
+    fitColumns:true,//自动调整列宽
+    striped:true,//斑马线
+    nowrap:true,
+    pagination:true,//分页
+    fit:true,
+    pageList:[5,10,20,50],
+    pageSize:5,
+    sortName:"gid",
+    remoteSort:false,//不是查数据库的时候排序
+    rownumbers:true,
+    columns:[[   
+		{field:'goodsids',title:'选择',width:100,align:'center',checkbox:true},   
+        {field:'pic',title:'图片',width:100,align:'center',formatter:function(value,row,index){
+        	if(value == "" || value==null ||value=="null"){
+        		return "<img src='../../images/zanwu.jpg' width='100px' height='100px' />";
+        	}else{
+        		return "<img src='../../"+value+"' width='100px' height='100px' />";
+        	}
+        }}, 
+        {field:'gid',title:'商品编号',width:100,align:'center',sortable:true},   
+        {field:'gname',title:'商品名',width:100,align:'center'},  
+        {field:'des',title:'描述',width:100,align:'center'}, 
+        {field:'price',title:'价格',width:100,align:'center'}, 
+        {field:'des',title:'说明',width:100,align:'center',formatter:function(value,row,index){
+        	if(value == "" || value==null ||value=="null"){
+        		return "暂无说明";
+        	}else{
+        		return value;
+        	}
+        }}, 
+        {field:'status',title:'状态',width:100,align:'center'}, 
+        {field:'price',title:'原价',width:100,align:'center'}
+    ]],
+	toolbar:"#goods_op1"
+});
+//打开对话框
+function openDialog(){
+		$("#goods_op2").dialog("open");
+		$("#shop_sname").html("");
+	//获取商店
+//		$.post("../../storeInfoServlet",{op:"findStoreInfo",aid:aid},function(data){
+//			$.each(data,function(index,item){
+//				$("#shop_sname").append($("<option value='"+item.spid+"'>"+item.sname+"</option>"));
+//			});
+//		},"json");
+}
+
+function addGoods(){
+	var spit = $.trim($("#shop_sname").val());
+	var name = $.trim($("#goods_name").val());
+	var mark = $.trim($("#goods_mark").val());
+	var wowoprice= $.trim($("#goods_wowoprice").val());
+	var price = $.trim($("#goods_price").val());	
+	$.ajaxFileUpload({
+		url:"../../goodsServlet?op=addGoods",
+		fileElementId:"goods_pic",
+		dataType:"json",
+		data:{spit:spit,name:name,wowoprice:wowoprice,price:price,mark:mark},
+		success:function(data){
+			data = parseInt($.trim(data));
+			if(data>0){	
+				$("#goods_op2").dialog("close");
+				$("#goods_data").datagrid("reload");
+				$.messager.show({title:'成功提示',msg:'添加商品成功...',timeout:2000,showType:'slide'});
+
+			}
+		},
+		error:function(){
+			alert("添加失败");
+		}
+	});	
+}
+
+</script>

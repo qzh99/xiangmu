@@ -1,0 +1,210 @@
+<style>
+	.add_shopping_info>ul>li{
+		list-style-type:none;
+		margin-top:20px;
+	}
+	
+	.add_shopping_info>ul>li>span{
+		display:inline-block;
+		width:120px;
+		text-align:right;
+		margin-right:10px;
+	}
+	
+	.add_shopping_info>ul>li>input,.add_shopping_info>ul>li>select{
+		width:200px;
+		border:1px solid #6198CD;
+	}
+</style>
+
+
+<div class="add_shopping_info">
+	<ul>
+		<li>
+			<span>店铺名称:</span>
+			<input type="text" name="manager_shopping_sname" id="manager_shopping_sname" placeholder="请输入您的店铺名称..." required />
+		</li>
+		<li>
+			<span>省份:</span>
+			<select name="manager_shopping_prov" id="province">
+				<option >--请选择省份--</option>
+			</select>
+			
+			<span>城市:</span>
+			<select name="manager_shopping_city" id="city">
+				<option value="100100">--请选择城市--</option>
+			</select>
+			
+			<span>地区:</span>
+			<select name="manager_shopping_area" id="district">
+				<option value="100101">--请选择地区--</option>
+			</select>
+		</li>
+		<li>
+			<span>详细地址:</span>
+			<input type="text" name="manager_shopping_addr" id="manager_shopping_addr" placeholder="请输入您的详细地址..." required />
+			
+			<span>联系方式:</span>
+			<input type="text" name="manager_shopping_tel" id="manager_shopping_tel" placeholder="请输入您的联系方式..." required />
+			
+			<span>日期:</span>
+			<input type="text" name="manager_shopping_date" id="manager_shopping_date" class="easyui-datebox" required/>
+		</li>
+		<li>
+			<span>店铺信息:</span>
+			<a href="javascript:add_shopping_info()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+			<div style="margin-left:70px;margin-top:10px">
+				<script id="editor" type="text/plain" style="width:940px;height:300px;"></script>
+			</div>
+		</li>
+	</ul>
+</div>
+ <script type="text/javascript">
+	//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+	var ue = UE.getEditor('editor');
+	function add_shopping_info(){
+		var sname=$("#manager_shopping_sname").val();
+		var prov=$("#province").val();
+		var city=$("#city").val();
+		var area=$("#district").val();
+		var addr=$("#manager_shopping_addr").val();
+		var tel=$("#manager_shopping_tel").val();
+		var date=$("#manager_shopping_date").datebox("getValue");
+		var editor=ue.getContentTxt();
+		
+		if(sname==null){
+			return ;
+		}
+		if(prov==null){
+			return ;
+		}
+		if(city==null){
+			return ;
+		}
+		if(area==null){
+			return ;
+		}
+		if(date==null){
+			return ;
+		}
+		if(tel==null){
+			return ;
+		}
+		
+		console.info(province+" "+city+" "+district+" "+addr+" "+tel+" "+date+" "+editor);
+		
+		$.post("../../shoppingServlet",
+				{op:"addShopping",sname:sname,prov:prov,city:city,area:area,addr:addr,tel:tel,date:date,editor:editor},
+				function(data){
+					data=parseInt($.trim(data));
+					if(data>0){//删除成功
+						$.messager.show({title:'成功提示',msg:'店铺信息添加成功...',timeout:2000,showType:'slide'});
+							$("#add_shopping_info").datagrid("reload");//重新加载一次数据
+					}else{
+						$.messager.show({title:'失败提示',msg:'店铺信息删除失败...',timeout:2000,showType:'slide'});
+					}
+				}
+			);
+		//UE.getEditor('editor').execCommand('insertHtml','<p>阿斯蒂芬</p><p><br/></p><p><strong>爱迪生</strong><br/></p>');
+		
+		//UE.getEditor('editor').setContent('<p>阿斯蒂芬</p><p><br/></p><p><strong>爱迪生</strong><br/></p>');
+		//console.info(ue.getContent());
+		//console.info($("#manager_shopping_date").datebox("getValue"));
+	}
+	
+	$(function(){
+		var xmlDom=createXmlDom();
+		xmlDom.async=false;
+		xmlDom.load("city.xml");
+		
+		var pro=$("#province");
+		var city=$("#city");
+		var district=$("#district");
+		
+		var pros=xmlDom.getElementsByTagName("province");
+		
+		for(var i=0;i<pros.length;i++){
+			addOption(pros[i],pro);	
+		}
+		
+		$("#province").bind({
+			change:function(){
+				var code=pro.val();
+				$("#city").empty();
+				$("#district").empty();
+				var opInfo=$("<option value='100100'>--请选择城市--</option>");
+				$("#city").prepend(opInfo);
+				var opInfo=$("<option value='100101'>--请选择地区--</option>");
+				$("#district").prepend(opInfo);
+				
+				for(var i=0;i<pros.length;i++){
+					if(pros[i].nodeType==1 && pros[i].getAttribute("postcode")==code){
+						var cities=pros[i].childNodes;
+						for(var j=0;j<cities.length;j++){
+							if(cities[j].nodeType==1){
+								addOption(cities[j],city);	
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		$("#city").bind({
+			change:function(){
+				var selPro=pro.val();
+				var code=city.val();
+				$("#district").empty();
+				var opInfo=$("<option value='100101'>--请选择地区--</option>");
+				$("#district").prepend(opInfo);
+				
+				for(var i=0;i<pros.length;i++){
+					if(pros[i].nodeType==1 && pros[i].getAttribute("postcode")==selPro){
+						var cities=pros[i].childNodes;
+						for(var j=0;j<cities.length;j++){
+							if(cities[j].nodeType==1 && cities[j].getAttribute("postcode")==code){
+								var area=cities[j].childNodes;
+								for(var k=0;k<area.length;k++){
+									if(area[k].nodeType==1){
+										addOption(area[k],district);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+	})
+	
+	function addOption(node,obj){
+		var opInfo=$("<option value="+node.getAttribute("postcode")+">"+node.getAttribute("name")+"</option>");
+		opInfo.appendTo(obj);
+	}
+	
+	
+	function createXmlDom(){
+		var xmlDom=null;
+		if(window.ActiveXObject){
+			xmlDom=createIeXmlDom();	
+		}else if(document.implementation.createDocument){
+			xmlDom=document.implementation.createDocument("","",null);
+		}else{
+			alert("您的浏览器不支持xmlDom,请及时更新");	
+		}
+		return xmlDom;
+	}
+	
+	function createIeXmlDom(){
+		var arr=["MSXML2.DOMDocument.6.0","MSXML2.DOMDocument.5.0","MSXML2.DOMDocument.4.0","MSXML2.DOMDocument.3.0","MSXML2.DOMDocument","Microsoft.XMLDOM"];
+		for(var i=0;i<arr.length;i++){
+			try{
+				var ieXmlDom=new ActiveXObject(arr[i]);
+				return ieXmlDom;
+			}catch(ex){
+				alert("您的浏览器不支持MSXML组件，请及时更新浏览器");	
+			}
+		}
+	}
+</script>
+

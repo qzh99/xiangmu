@@ -1,0 +1,11 @@
+/*$(function(){
+	$.post("userServlet",{op:"getLoginInfo"},function(data){
+		if(data==""||data==null){
+			window.location="../login.html";
+			//window.navigate="../login.html";
+			 //location.herf="../reg.html";
+		}else{
+			$("#index_loginuser").text("当前用户："+data.uname);
+		}	
+	},"json");
+});*/

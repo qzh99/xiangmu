@@ -1,0 +1,83 @@
+<script type="text/javascript" src="../../js/echarts.min.js"></script>	
+<table id="orders_dataInfo"></table>
+<input type="button" onclick="show()" value="查看统计图"/>
+<div id="myechart" style="weight:800px;height:400px;"></div>
+<script>
+	var datagrid;
+	var editRow=undefined;	//当前编辑的行
+	var statusObj=[{sid:1,statusStr:'正常'},{sid:0,statusStr:'已禁用'}];
+	var op;
+	var flag;
+	
+	datagrid=$('#orders_dataInfo').datagrid({   
+	    url:'../../ordersServlet', 
+	    queryParams:{op:"echat"},
+	    loadMsg:"数据加载中...",
+	    fitColumns:true,
+	    striped:true,
+	    nowrap:true,
+	    pagination:true,
+	    rownumbers:true,
+	    pageList:[5,10,20,30,40,50,100],
+	    pageSize:5,
+	    sortName:"oid",
+	    remoteSort:false,
+	    columns:[[   
+	        {field:'oids',title:'选择',width:100,align:'center',checkbox:true},  
+	        {field:'oid',title:'订单号',width:100,align:'center',sortable:true},   
+	        {field:'userid',title:'用户编号',width:100,align:'center',editor:{type:"text",options:{required:true}}},   
+	        {field:'gid',title:'商品编号',width:100,align:'center',editor:{type:"text"}},
+	        {field:'num',title:'购买数量',width:100,align:'center',editor:{type:"text"}},
+	        {field:'totalprice',title:'商品单价',width:100,align:'center',editor:{type:"text"}},
+	        {field:'status',title:'订单状态',width:100,align:'center',editor:{type:"combobox",options:{
+	        	required:true,valueField:'rid',textField:'statusStr',data:statusObj}},
+	        	formatter:function(value,row,index){
+	        		for(var i=0;i<statusObj.length;i++){
+	        			if(statusObj[i].sid==value){
+	        				return statusObj[i].statusStr;
+	        			}
+	        		}
+	        		return value;
+	        	}
+	        	
+	        }
+	    ]],
+	});  
+	
+	function show(){
+		var str = datagrid.datagrid("getData")["rows"];
+		var length = str.length;
+		var strArr = new Array();
+		var dataArr = new Array();
+		for(var i = 0 ; i < length ; i ++){
+			strArr[i] = str[i]["gid"];
+			dataArr[i] = str[i]["num"];
+		}
+		
+		
+		// 指定图表的配置项和数据
+		var option = {
+		    title: {
+		        text: '销量图'
+		    },
+		    tooltip: {},
+		    legend: {
+		        data:['销量']
+		    },
+		    xAxis: {
+		        data: strArr
+		    },
+		    yAxis: {},
+		    series: [{
+		        name: '销量',
+		        type: 'bar',
+		        data: dataArr
+		    }]
+		};
+		// 使用刚指定的配置项和数据显示图表。
+		echarts.init($('#myechart')[0]).setOption(option);
+	}
+</script>
+
+
+
