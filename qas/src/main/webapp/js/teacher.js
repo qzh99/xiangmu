@@ -12,7 +12,8 @@ $(function() {
 	});
 
 	var scoreData;
-	$.get("../classes/teacherSelcetClass", {}, function(data1) {
+	var teacherId = $("#teacherId").val();
+	$.get("../classes/teacherSelcetClass", {teacherId:teacherId}, function(data1) {
 		scoreData = data1;
 	})
 	
@@ -37,6 +38,14 @@ $(function() {
 						});
 						scoreStatus++;
 					}
+				}
+			}else if(node.id=="teacherChangePwd"){
+				if(tabs.tabs("exists","修改密码")){
+					tabs.tabs("select","修改密码");
+					return;
+				}else {
+					title = "修改密码";
+					href = "teacherChangePwd.jsp";
 				}
 			} else if (node.id != "" && node.id != undefined) {
 				if (tabs.tabs("exists", node.text)) {

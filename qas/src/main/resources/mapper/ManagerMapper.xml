@@ -7,4 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findManagerByManager" parameterType="Manager" resultType="Manager">
 	    select * from Manager where  mPwd=#{mPwd} and mId=#{mId}
 	</select>
+	<update id="managerChangePwd">
+		update manager set mPwd=#{param1} where mId=#{param2}
+	</update>
 </mapper>

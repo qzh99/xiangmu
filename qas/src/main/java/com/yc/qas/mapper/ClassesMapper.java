@@ -10,4 +10,6 @@ public interface ClassesMapper {
 
 	List<TreeNode> teacherSelcetClass(int teacherId);
 
+	List<Integer> selectStuIdBySno(int studentSno);
+
 }

@@ -56,7 +56,15 @@
 	<script type="text/javascript" src="../easyui/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../easyui/js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../easyui/js/index.js"></script>
-    
+    <script type="text/javascript">
+    	function exit(){
+    		$.messager.confirm('提示', '你确定要退出系统吗?', function(r){
+    			if (r){
+    				location='out.jsp';
+    			}
+    		});
+    	}
+    </script>
 </head>
 <body id="body"  class="easyui-layout" >
 	<div data-options="region:'north',border:false" style="height:100px;background:#B3DFDA;">
@@ -64,7 +72,7 @@
 		<div class="navy_header">
 			<div>
 				<p>当前用户: <span id="index_loginuser">${sessionScope.currentuser.mName}</span></p>
-				<a href="javascript:if(confirm('确实要退出吗?'))location='out.jsp'"  class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">退出</a> 
+				<a onclick="exit()"  class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">退出</a> 
 			</div>
 		</div>
 	</div>
@@ -73,18 +81,10 @@
 		    <li>  
 		        <span>主菜单</span>  
 		        <ul>  
-		            <li id="change_pwd">修改密码</li>  
-		            <li>  
-		                <span>成绩查询</span>  
-		              	<ul>
-				            <li id="grades">  
-				                <span>查看成绩</span>  
-				            </li> 
-				             <li id="outfile">  
-				                <span>生成Excel</span>  
-				            </li>
-				        </ul> 
-			        </li>
+		            <li id="admin_change_pwd">修改密码</li>  
+		            <li id="manageStudent">添加学生</li>
+		            <li id="magageTeacher">添加教师</li>
+		            <li id="manageStudentUnion">添加学生会成员</li>
 		        </ul>  
 		    </li>  
 		</ul>  
@@ -92,7 +92,7 @@
 	</div>
 	<div data-options="region:'east',split:true,collapsed:true,title:'帮助'" style="width:200px;padding:10px;"></div>
 	<div data-options="region:'south',border:false" style="height:40px;background:#A9FACD;padding:0px;">
-		<p class="copyright">源辰信息科技有限公司 &copy;<span> 版权所有</span></p>
+		<p class="copyright"> &copy;<span> 版权所有</span></p>
 	</div>
 	<div data-options="region:'center',title:'内容',tools:[{
 		iconCls:'icon-full',

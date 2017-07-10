@@ -26,14 +26,12 @@ public class ScoreServiceImpl implements ScoreService {
 	@Override
 	public int addScore(String scores, String tacherName) {
 		Gson gson = new Gson();
-		List<StudentScore> studentScores = gson.fromJson(scores,
-				new TypeToken<List<StudentScore>>() {
-				}.getType());
+		List<StudentScore> studentScores = gson.fromJson(scores,new TypeToken<List<StudentScore>>() {}.getType());
 		List<Score> list = new ArrayList<Score>();
 		for (StudentScore studentScore : studentScores) {
 			int sNo = studentScore.getsNo();
 			int timId = studentScore.getTimId();
-			int sGrade = studentScore.getsGrade();
+			float sGrade = studentScore.getsGrade();
 			Score score = new Score(sNo, timId, sGrade, tacherName);
 			list.add(score);
 		}
@@ -41,33 +39,43 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public EUDataGridList<Timetable> studentSelectCourse(int sNo, int page, int rows) {
+	public EUDataGridList<Timetable> studentSelectCourse(int sNo, int page,
+			int rows) {
 		PageHelper.startPage(page, rows);
 		List<Timetable> list = scoreMapper.studentSelectCourse(sNo);
 		PageInfo<Timetable> pageinfo = new PageInfo<Timetable>(list);
 
 		EUDataGridList<Timetable> data = new EUDataGridList<Timetable>();
-		data.setTotal(Long.signum(pageinfo.getTotal()));
+		data.setTotal(pageinfo.getTotal());
 		data.setRows(list);
 		return data;
 	}
 
 	@Override
-	public int studnetAddScore(int sNo, String timId)  {
+	public int studnetAddScore(int sNo, String timId) {
 		String[] timIds = timId.split(",");
-		List<Score> list=new ArrayList<Score>();
-		for(int i=0;i<timIds.length;i++){
-			Score score=new Score(sNo,Integer.parseInt(timIds[i]));
+		List<Score> list = new ArrayList<Score>();
+		for (int i = 0; i < timIds.length; i++) {
+			Score score = new Score(sNo, Integer.parseInt(timIds[i]));
 			list.add(score);
 		}
-		
-		int temp=scoreMapper.studnetAddScore(list);
-		if(temp<0){
+		int temp = scoreMapper.studnetAddScore(list);
+		if (temp < 0) {
 			return 0;
-		}else{
+		} else {
 			return temp;
 		}
-		
+	}
+
+	@Override
+	public int studnetDeleteScore(int sNo, String timId) {
+		String[] timIds = timId.split(",");
+		List<Score> list = new ArrayList<Score>();
+		for (int i = 0; i < timIds.length; i++) {
+			Score score = new Score(sNo, Integer.parseInt(timIds[i]));
+			list.add(score);
+		}
+		return scoreMapper.studnetDeleteScore(list);
 	}
 
 }

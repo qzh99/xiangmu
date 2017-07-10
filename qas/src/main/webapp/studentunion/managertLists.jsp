@@ -19,13 +19,13 @@
 		<table cellpadding="5">
 			<tr>
 				<td>量化条例名:</td>
-				<td><input id="name" type="text" class="easyui-textbox"
+				<td><input id="name1" type="text" class="easyui-textbox"
 					data-options="required:true"></input></td>
 			</tr>
 
 			<tr>
 				<td>分值:</td>
-				<td><input id="score" type="text" class="easyui-textbox"
+				<td><input id="score1" type="text" class="easyui-textbox"
 					data-options="required:true"></input></td>
 			</tr>
 		</table>
@@ -77,12 +77,14 @@
 	});
 	
 	function addMessages() {
+		document.getElementById('name1').value ="";
+		document.getElementById('score1').value ="";
 		$("#addMessages").dialog("open");
 	}
 	
 	function addMessage(){
-		var name=$.trim($("#name").val());
-		var score=$.trim($("#score").val());
+		var name=$.trim($("#name1").val());
+		var score=$.trim($("#score1").val());
 		
 		if(name==""||score==""){
 			$.messager.alert('提示','请输入信息!','info');
@@ -91,6 +93,7 @@
 		
 		$.post("../insertQuantization",{name:name,score:score},function(data){
 			if(data>0){
+				$("#addMessages").dialog("close");
 				$.messager.show({
 					title : '提示',
 					msg : '添加成功',

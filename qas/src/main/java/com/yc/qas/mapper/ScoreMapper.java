@@ -16,4 +16,6 @@ public interface ScoreMapper {
 
 	int studnetAddScore(List<Score> list);
 
+	int studnetDeleteScore(List<Score> list);
+
 }

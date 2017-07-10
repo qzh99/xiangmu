@@ -37,9 +37,15 @@ public class TeacherServiceImpl implements TeacherService {
 		PageInfo<StudentScore> pageinfo= new PageInfo<StudentScore>(list);
 		
 		EUDataGridList<StudentScore> data=new EUDataGridList<StudentScore>();
-		data.setTotal(Long.signum(pageinfo.getTotal()));
+		data.setTotal(pageinfo.getTotal());
 		data.setRows(list);
 		return data;
+	}
+
+	@Override
+	public boolean teacherChangePwd(String newPwd, int tId) {
+		String pwd=Encrypt.md5AndSha(newPwd);
+		return teacherMapper.teacherChangePwd(pwd,tId);
 	}
 
 }

@@ -6,4 +6,6 @@ public interface StudentUnionMapper {
 	 StudentUnion findStudentUnion(StudentUnion studentUnion) ;
 
 	boolean changePwd(String newPwd, int suId);
+
+	int managerAddStudentUnion(String suname);
 }

@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selcetStuByClassId" parameterType="int" resultType="StudentScore">
 		select st.sNo,st.sName,t.timid,t.timName,sc.sGrade from student
 		st,timetable t, score sc where st.sno=sc.sno and sc.timid=t.timid and
-		st.classesId=#{param1}
+		st.cId=#{param1}
 		and t.timid in(select timId from teaching where tId=#{param2} )
 	</select>
 </mapper>

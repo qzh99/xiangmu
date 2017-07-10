@@ -5,6 +5,11 @@ import java.util.Date;
 public class StudentAppraise {
 	private String sName;
 	private int qId;
+	private String qName;
+	private float sum;
+	private String author;
+	private Date aTime;
+
 	public int getqId() {
 		return qId;
 	}
@@ -12,11 +17,6 @@ public class StudentAppraise {
 	public void setqId(int qId) {
 		this.qId = qId;
 	}
-
-	private String qName;
-	private float sum;
-	private String author;
-	private Date aTime;
 
 	public String getsName() {
 		return sName;
@@ -33,8 +33,6 @@ public class StudentAppraise {
 	public void setqName(String qName) {
 		this.qName = qName;
 	}
-
-	
 
 	public float getSum() {
 		return sum;
@@ -66,13 +64,5 @@ public class StudentAppraise {
 				+ qName + ", sum=" + sum + ", author=" + author + ", aTime="
 				+ aTime + "]";
 	}
-
-
-	
-
-	
-
-
-	
 
 }

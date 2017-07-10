@@ -21,4 +21,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="teacherSelcetClass" resultType="TreeNode" resultMap="Result">
 		select c.* from classes c,teaching t where c.cid=t.cid and t.tid=#{arg0}
 	</select>
+	
+	
+	<select id="selectStuIdBySno" resultType="int" >
+		select sNo from student where cId in (select cId from student where sNo=#{param1})
+	</select>
 </mapper>

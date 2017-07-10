@@ -10,4 +10,6 @@ public interface TeacherService {
 
 	EUDataGridList<StudentScore> selcetStuByClassId(int page,int rows, int classesId ,int tId);
 
+	boolean teacherChangePwd(String newPwd, int tId);
+
 }

@@ -35,21 +35,29 @@ $(function(){
 				    title="修改密码";
 				    href="studentChangePwd.jsp";
 				}
-			}else if(node.id=="grades"){
-				if(tabs.tabs("exists","查看成绩")){
-					tabs.tabs("select","查看成绩");
+			}else if(node.id=="studentAppraise"){
+				if(tabs.tabs("exists","量化考核成绩")){
+					tabs.tabs("select","量化考核成绩");
 					return;
 				}else{
-					title="查看成绩";
-					href="admin.html";
+					title="量化考核成绩";
+					href="studentAppraise.jsp";
 				}
-			}else if(node.id=="outfile"){
-				if(tabs.tabs("exists","生成Excel")){
-					tabs.tabs("select","生成Excel");
+			}else if(node.id=="studentScore"){
+				if(tabs.tabs("exists","学科成绩")){
+					tabs.tabs("select","学科成绩");
 					return;
 				}else{
-					title="生成Excel";
-					href="user.html";
+					title="学科成绩";
+					href="studentScore.jsp";
+				}
+			}else if(node.id=="finalRank"){
+				if(tabs.tabs("exists","最终排名")){
+					tabs.tabs("select","最终排名");
+					return;
+				}else{
+					title="最终排名";
+					href="finalRank.jsp";
 				}
 			}else if(node.id=="stuunionchangepwd"){
 				if(tabs.tabs("exists","修改密码")){
@@ -88,6 +96,38 @@ $(function(){
 						});
 						status++;
 					}
+				}
+			}else if(node.id=="admin_change_pwd"){
+				if(tabs.tabs("exists","修改密码")){
+					tabs.tabs("select","修改密码");
+					return;
+				}else {
+					title = "修改密码";
+					href = "adminChangePwd.jsp";
+				}
+			}else if(node.id=="manageStudent"){
+				if(tabs.tabs("exists","管理学生")){
+					tabs.tabs("select","管理学生");
+					return;
+				}else {
+					title = "管理学生";
+					href = "manageStudent.jsp";
+				}
+			}else if(node.id=="magageTeacher"){
+				if(tabs.tabs("exists","管理教师")){
+					tabs.tabs("select","管理教师");
+					return;
+				}else {
+					title = "管理教师";
+					href = "magageTeacher.jsp";
+				}
+			}else if(node.id=="manageStudentUnion"){
+				if(tabs.tabs("exists","管理学生会成员")){
+					tabs.tabs("select","管理学生会成员");
+					return;
+				}else {
+					title = "管理学生会成员";
+					href = "manageStudentUnion.jsp";
 				}
 			}else if(node.id!=""&&node.id!=undefined){
 				if(tabs.tabs("exists",node.text)){

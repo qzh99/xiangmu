@@ -11,4 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update studentUnion set suPwd=#{param1} where suId=#{param2}
 	</update>
 	
+	<insert id="managerAddStudentUnion">
+		insert into StudentUnion values(seq_studentUnion_suId.nextval,#{param1,jdbcType=VARCHAR},'10470c3b4b1fed12c3baac014be15fac67c6e815','')
+	</insert>
 </mapper>

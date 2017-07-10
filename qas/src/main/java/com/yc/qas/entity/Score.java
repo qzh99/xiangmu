@@ -3,7 +3,7 @@ package com.yc.qas.entity;
 public class Score {
 	private int sNo;
 	private int timId;
-	private int sGrade;
+	private float sGrade;
 	private String sAuthor;
 	private String sTime;
 
@@ -12,11 +12,11 @@ public class Score {
 		super();
 	}
 
-	public Score(int sNo, int timId, int sGrade, String sAuthor) {
+	public Score(int sNo, int timId, float sGrade2, String sAuthor) {
 		super();
 		this.sNo = sNo;
 		this.timId = timId;
-		this.sGrade = sGrade;
+		this.sGrade = sGrade2;
 		this.sAuthor = sAuthor;
 	}
 
@@ -42,11 +42,11 @@ public class Score {
 		this.timId = timId;
 	}
 
-	public int getsGrade() {
+	public float getsGrade() {
 		return sGrade;
 	}
 
-	public void setsGrade(int sGrade) {
+	public void setsGrade(float sGrade) {
 		this.sGrade = sGrade;
 	}
 

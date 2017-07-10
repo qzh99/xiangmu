@@ -7,5 +7,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="Teacher">
 		select * from Teacher where tId=#{tId} and tPwd=#{tPwd}
 	</select>
-	
+	<update id="teacherChangePwd">
+		update teacher set tPwd=#{param1} where tId=#{param2}
+	</update>
+	<insert id="managerAddStudent">
+		insert into teacher values(seq_teacher_tId.nextval,#{param1},'10470c3b4b1fed12c3baac014be15fac67c6e815','')
+	</insert>
 </mapper>

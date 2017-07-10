@@ -1,6 +1,9 @@
 package com.yc.qas.entity;
 
-public class Appraise {
+import java.io.Serializable;
+
+public class Appraise implements Serializable {
+	private static final long serialVersionUID = -3501865766587930184L;
 	private int sNo;
 	private int qId;
 	private String author;

@@ -41,16 +41,27 @@ public class TeacherHandler {
 
 	@RequestMapping("/selcetStuByClassId")
 	@ResponseBody
-	public EUDataGridList<StudentScore> selcetStuByClassId(int page ,int rows,@RequestParam(defaultValue="-1",value="id")int classId,HttpSession session) {
+	public EUDataGridList<StudentScore> selcetStuByClassId(int page ,int rows,@RequestParam(defaultValue="-1",value="classId")int classId,int teacherId) {
 		if(classId==-1){
 			EUDataGridList<StudentScore>  result=new EUDataGridList<StudentScore>();
-			result.setTotal(0);
+			result.setTotal(0l);
 			List<StudentScore> list = new ArrayList<StudentScore>();
 			result.setRows(list);
 			return result;
 		}
+		return  teacherService.selcetStuByClassId(page,rows,classId,teacherId);
+	}
+	
+	@RequestMapping("/teacherChangePwd")
+	@ResponseBody
+	public int teacherChangePwd( String newPwd,HttpSession session) {
 		Teacher teacher=(Teacher) session.getAttribute("currentuser");
-		int tId=teacher.gettId();
-		return  teacherService.selcetStuByClassId(page,rows,classId,tId);
+		int  tId=teacher.gettId();
+		
+		int result=0;
+			if(teacherService.teacherChangePwd(newPwd, tId)){
+				result=1;
+			}
+		return result;
 	}
 }

@@ -10,7 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yc.qas.entity.EUDataGridList;
 import com.yc.qas.entity.Student;
+import com.yc.qas.entity.StudentFinalRank;
+import com.yc.qas.entity.StudentSelectApprise;
+import com.yc.qas.entity.StudentSelectScore;
 import com.yc.qas.entity.TreeNode;
 import com.yc.qas.service.StudentService;
 import com.yc.qas.util.AttributeData;
@@ -62,4 +66,22 @@ public class StudentHandler {
 			return studentService.selcetSIdByClassId(id);
 	}
 	
+	
+	@RequestMapping("/studentSelectAllAppraise")
+	@ResponseBody
+	public EUDataGridList<StudentSelectApprise> studentSelectAllAppraise(int studentSno,int page,int rows) {
+			return (EUDataGridList<StudentSelectApprise>) studentService.studentSelectAllAppraise(studentSno,page,rows);
+	}
+	
+	@RequestMapping("/studentSelectAllScore")
+	@ResponseBody
+	public EUDataGridList<StudentSelectScore> studentSelectAllScore(int studentSno,int page,int rows) {
+			return (EUDataGridList<StudentSelectScore>) studentService.studentSelectAllScore(studentSno,page,rows);
+	}
+	
+	@RequestMapping("/studentFinalRank")
+	@ResponseBody
+	public EUDataGridList<StudentFinalRank> studentFinalRank(int studentSno,int page,int rows) {
+			return (EUDataGridList<StudentFinalRank>) studentService.studentFinalRank(studentSno,page,rows);
+	}
 }

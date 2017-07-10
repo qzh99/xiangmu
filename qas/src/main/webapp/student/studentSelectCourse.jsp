@@ -10,20 +10,19 @@
 	<div data-options="region:'center',title:'已选课程'">
 		<table id="studentCheckedCourse"></table>
 	</div>
-	
+
 	<div id="studentAddCourseButton" class="easyui-dialog" title="添加课程"
 		style="width: 600px; height: 400px" data-options="closed:true">
+		<div id="studentSaveCourseToolbar" style="height: 30px">
+			<a onclick="studentSaveCourse()" class="easyui-linkbutton"
+				data-options="iconCls:'icon-add',plain:true" style="float: left">保存</a>
+		</div>
 		<table id="addCourseTable" style="height: 100"></table>
-	</div>
-	
-	<div id="studentSaveCourseToolbar" style="height: 30px">
-		<a onclick="studentSaveCourse()" class="easyui-linkbutton"
-			data-options="iconCls:'icon-add',plain:true" style="float: left">保存</a>
 	</div>
 
 </div>
 <script type="text/javascript">
-	var sNo=$("#studentSno").val();
+	var sNo = $("#studentSno").val();
 	$('#studentCheckedCourse').datagrid({
 		url : '../studentSelectCourse',
 		queryParams : {
@@ -86,9 +85,9 @@
 			count++;
 		}
 	}
-	function studentSaveCourse(){
+	function studentSaveCourse() {
 		var checked = $("#addCourseTable").datagrid("getChecked");
-		if (checked == null||checked=="") {
+		if (checked == null || checked == "") {
 			$.messager.alert('提示', '请选择要操作的行!', 'info');
 			return;
 		}
@@ -98,8 +97,11 @@
 			timId += checked[i].timId + ","
 		}
 		timId += checked[length - 1].timId;
-		$.post("../studnetAddScore",{sNo:sNo,timId:timId},function (data){
-			if (data== 2) {
+		$.post("../studnetAddScore", {
+			sNo : sNo,
+			timId : timId
+		}, function(data) {
+			if (data == 2) {
 				$("#studentAddCourseButton").dialog("close");
 				$("#studentCheckedCourse").datagrid('reload');
 				$.messager.show({
@@ -109,12 +111,41 @@
 					showType : 'slide'
 				});
 			} else {
-				$.messager.alert('提示','该课程已经存在！','info');
+				$.messager.alert('提示', '该课程已经存在！', 'info');
 				return;
 			}
 		});
 	}
 	function studentDeleteCourse() {
+		var checked = $("#studentCheckedCourse").datagrid("getChecked");
+		if (checked == null || checked == "") {
+			$.messager.alert('提示', '请选择要操作的行!', 'info');
+			return;
+		}
+		var length = checked.length;
+		var timId = "";
+		for (var i = 0; i < length - 1; i++) {
+			timId += checked[i].timId + ","
+		}
+		timId += checked[length - 1].timId;
+		$.post("../studnetDeleteScore", {
+			sNo : sNo,
+			timId : timId
+		}, function(data) {
+			if (data == 2) {
+				$("#studentAddCourseButton").dialog("close");
+				$("#studentCheckedCourse").datagrid('reload');
+				$.messager.show({
+					title : '提示',
+					msg : '课程退选成功',
+					timeout : 5000,
+					showType : 'slide'
+				});
+			} else {
+				$.messager.alert('提示', '系统开小差，请重试！', 'info');
+				return;
+			}
+		});
 
 	}
 </script>

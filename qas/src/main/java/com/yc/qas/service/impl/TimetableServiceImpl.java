@@ -24,7 +24,7 @@ public class TimetableServiceImpl implements TimetableService {
 		PageInfo<Timetable> pageinfo = new PageInfo<Timetable>(list);
 
 		EUDataGridList<Timetable> data = new EUDataGridList<Timetable>();
-		data.setTotal(Long.signum(pageinfo.getTotal()));
+		data.setTotal(pageinfo.getTotal());
 		data.setRows(list);
 		return data;
 	}

@@ -11,4 +11,6 @@ public interface ScoreService {
 
 	int studnetAddScore(int sNo, String timId);
 
+	int studnetDeleteScore(int sNo, String timId);
+
 }

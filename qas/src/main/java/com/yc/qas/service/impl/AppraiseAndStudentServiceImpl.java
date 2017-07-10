@@ -25,7 +25,7 @@ public class AppraiseAndStudentServiceImpl implements AppraiseAndStudentService 
 		PageInfo<StudentAppraise> pageinfo= new PageInfo<StudentAppraise>(list);
 		
 		EUDataGridList<StudentAppraise> data=new EUDataGridList<StudentAppraise>();
-		data.setTotal(Long.signum(pageinfo.getTotal()));
+		data.setTotal(pageinfo.getTotal());
 		data.setRows(list);
 		return data;
 	}

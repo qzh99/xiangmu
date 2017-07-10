@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertQuantization">
 		insert into
 		Quantization(qId,qName,qScore)
-		values(seq_Quantization_qId.nextval,#{arg0},#{arg1})
+		values(seq_Quantization_qId.nextval,#{param1},#{param2})
 	</insert>
 
 </mapper>

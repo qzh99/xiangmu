@@ -9,25 +9,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		student st,timetable
 		t, score sc where st.sno=sc.sno and
 		sc.timid=t.timid and
-		st.classesid=#{param1}
+		st.cId=#{param1}
 		and t.timid in(select timId
 		from teaching where tId=#{param2} )
 	</select>
 
-	<update id="addScore" parameterType="java.util.List">
-
+	<!-- <update id="addScore" parameterType="java.util.List">
+		update score
 		<foreach collection="list" item="item" index="index" open=""
 			close="" separator=";">
-			update score
 			<set>
 				sGrade=#{item.sGrade},
 				sAuthor=#{item.sAuthor},
 				sTime=sysDate
 			</set>
-			where sNo=#{item.sNo} and timId=#{item.timId}
+			where (sNo=#{item.sNo} and timId=#{item.timId})
 		</foreach>
 
-	</update>
+	</update> -->
+    <update id="addScore" parameterType="java.util.ArrayList" >  
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">  
+            UPDATE score s    
+               <set>  
+                	s.sGrade = #{item.sGrade},
+                 	s.sAuthor = #{item.sAuthor},  
+                	s.sTime = sysDate 
+               </set>  
+             WHERE  
+                (s.sNo=#{item.sNo} and s.timId=#{item.timId}) 
+        </foreach>  
+    </update>  
+
+
 
 	<select id="studentSelectCourse" parameterType="int" resultType="Timetable">
 		select t.* from timetable t,score s where t.timid=s.timid and
@@ -41,5 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM DUAL
 		</foreach>
 	</insert>
+	<delete id="studnetDeleteScore">
+		delete score where
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator="or">
+			sNo=#{item.sNo} and timId=#{item.timId}
+		</foreach>
+	</delete>
 
 </mapper>

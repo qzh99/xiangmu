@@ -1,5 +1,4 @@
 --学生量化考核系统数据库设计
-
 create user OAS identified by a;
 grant dba to OAS;
 
@@ -18,16 +17,27 @@ insert into manager values(seq_manager_mId.nextval,'张三','123456','1393950470
 create table student(
        sNo int primary key,   --学号
        sName varchar2(20) not null,
-       classesId int,--班级id  
+       cId int,--班级id  
        sPwd varchar2(64) not null ,
        sEmail varchar2(20),
        timId varchar2(64),
-       foreign key (classesId) references classes(cId) on delete cascade 
+       foreign key (cId) references classes(cId) on delete cascade 
        foreign key (timId) references timetable(timId) on delete cascade 
 );
 
-insert into student values(13480101,'张政',1306,'123456','1393950470@qq.com');
-insert into student values(13580101,'张三',1305,'123456','1393950470@qq.com'); 
+insert into student values(13480101,'张政',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13580101,'陈国志',1305,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com',''); 
+insert into student values(13480102,'夏雨泽',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com',''); 
+insert into student values(13480103,'苏荷',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480104,'蒋琪芳',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480105,'邓立程',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480106,' 蔡元培',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480107,' 谢永言',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480108,' 曾伟',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480109,' 马睿',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480110,' 吕兴平',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+insert into student values(13480111,' 丁当',1306,'10470c3b4b1fed12c3baac014be15fac67c6e815','1393950470@qq.com','');
+
 
 
 --教师表
@@ -38,9 +48,11 @@ create table teacher(
        tEmail varchar2(20)
 );
 create sequence seq_teacher_tId start with 3001;
-insert into teacher values(seq_teacher_tId.nextval,'宋明达','123456','3403302300@qq.com');
-insert into teacher values(seq_teacher_tId.nextval,'陈子宏','123456','3403302300@qq.com');
-insert into teacher values(seq_teacher_tId.nextval,'周莹','123456','3403302300@qq.com');
+insert into teacher values(seq_teacher_tId.nextval,'宋明达','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into teacher values(seq_teacher_tId.nextval,'陈子宏','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into teacher values(seq_teacher_tId.nextval,'周莹','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into teacher values(seq_teacher_tId.nextval,'苏欣然','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into teacher values(seq_teacher_tId.nextval,'王云','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
 
 --学生会
 create table studentUnion(
@@ -50,7 +62,9 @@ create table studentUnion(
        suEmail varchar2(20)
 );
 create sequence seq_studentUnion_suId start with 2001;
-insert into studentUnion values(seq_studentUnion_suId.nextval,'王子成','123456','3403302300@qq.com');
+insert into studentUnion values(seq_studentUnion_suId.nextval,'王子成','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into studentUnion values(seq_studentUnion_suId.nextval,'唐杰','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
+insert into studentUnion values(seq_studentUnion_suId.nextval,'林雅静','10470c3b4b1fed12c3baac014be15fac67c6e815','3403302300@qq.com');
 
 --班级信息表
 create table classes(
@@ -141,10 +155,14 @@ create table teaching(
 )
 insert into teaching values(3001,1,1305);
 insert into teaching values(3001,1,1306);
-insert into teaching values(3002,2,1305);
-insert into teaching values(3002,2,1302);
-insert into teaching values(3003,3,1304);
-insert into teaching values(3003,3,1301);
+insert into teaching values(3002,2,1301);
+insert into teaching values(3002,2,1306);
+insert into teaching values(3003,3,1302);
+insert into teaching values(3003,3,1306);
+insert into teaching values(3021,4,1303);
+insert into teaching values(3021,4,1306);
+insert into teaching values(3041,5,1304);
+insert into teaching values(3041,5,1306);
 
 --成绩表
 create table score(
@@ -157,18 +175,10 @@ create table score(
      foreign key(sNo) references student(sNo),--用于取学生姓名，学号
      foreign key(timId) references timetable(timId)
 );
-insert into score values(13480101,1,86);
-insert into score values(13480101,2,78);
+insert into score values(13480101,1,86,'','');
+insert into score values(13480101,2,78,'','');
 
 
---总成绩表
-create table totalScore(
-       tsId int primary key,
-       suId int foreign key references student(suId),--取到学生学号，姓名
-       scoId int foreign key references score(scoId),--取到量化成绩
-       aId int foreign key references score(aId),--取到期末成绩
-       toSum int --期末成绩
-);
 
 
 

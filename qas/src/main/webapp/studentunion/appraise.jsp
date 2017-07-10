@@ -5,7 +5,7 @@
 	<div id="addListToolbar" style="height: 30px">
 		<a onclick="studentUnionAddMessages()" class="easyui-linkbutton"
 			data-options="iconCls:'icon-add',plain:true" style="float: left">添加记录</a>
-			<a onclick="studentUnionDeleteMessages()" class="easyui-linkbutton"
+		<a onclick="studentUnionDeleteMessages()" class="easyui-linkbutton"
 			data-options="iconCls:'icon-cancel',plain:true" style="float: left">删除记录</a>
 	</div>
 
@@ -20,7 +20,7 @@
 						$('#scoreGrid').datagrid({   
 					    url:'../appraiseAndStudent/selectStudnetAppraiseBySno',//查询某学生的量化情况
 					    queryParams:{sNo:node.text},
-					    method:'get',
+					    method:'post',
 					    fit:true,
 					    pagination:true,
 					    pageNumber:1,
@@ -37,11 +37,11 @@
 					        formatter: function(value,row,index){
 										return getDate(row.aTime.toString());
 							}
-					        }  ,
+					        }  
 					    ]] , 
 					    toolbar: '#addListToolbar'
 					});  
-					$('#scoreGrid').datagrid('reload');
+					//$('#scoreGrid').datagrid('reload');
 					}
 				
 			"></ul>
@@ -54,11 +54,11 @@
 
 	<div id="addMessagesForStudnet" class="easyui-dialog" title="添加条例"
 		style="width: 600px; height: 400px" data-options="closed:true">
+		<div id="list_tool" style="height: 30px">
+			<a onclick="addMessagesForStudent()" class="easyui-linkbutton"
+				data-options="iconCls:'icon-save',plain:true" style="float: left;">保存</a>
+		</div>
 		<table id="addMessagesTable" style="height: 100"></table>
-	</div>
-	<div id="list_tool" style="height: 30px">
-		<a onclick="addMessagesForStudent()" class="easyui-linkbutton"
-			data-options="iconCls:'icon-save',plain:true" style="float: left;">保存</a>
 	</div>
 
 </div>
@@ -67,6 +67,7 @@
 <script type="text/javascript">
 	var count = 0;
 	function studentUnionAddMessages() {
+
 		$("#addMessagesForStudnet").dialog("open");
 
 		if (count == 0) {
@@ -102,20 +103,20 @@
 					editor : 'text'
 				} ] ],
 				toolbar : "#list_tool"
-				
+
 			});
 
 			count++;
 		}
-
+		$('#addMessagesTable').datagrid('clearSelections');
 	}
 
 	function addMessagesForStudent() {
-		var sNo=$('#classTree').tree('getSelected').text;//取到当前被操作的学生的学号
+		var sNo = $('#classTree').tree('getSelected').text;//取到当前被操作的学生的学号
 		var checked = $("#addMessagesTable").datagrid("getChecked");//getChecked取到所有checkbox被选中的行的数据,返回元素记录的数组数据。
-		var name = $("#adminName").val(); 
-		
-		if (checked == null||checked=="") {
+		var name = $("#adminName").val();
+
+		if (checked == null || checked == "") {
 			$.messager.alert('提示', '请选择要操作的行!', 'info');
 			return;
 		}
@@ -131,7 +132,7 @@
 			author : name,
 			qids : qid
 		}, function(data) {
-			if (data== 2) {
+			if (data == 2) {
 				$("#addMessagesForStudnet").dialog("close");
 				$("#scoreGrid").datagrid('reload');
 				$.messager.show({
@@ -141,17 +142,17 @@
 					showType : 'slide'
 				});
 			} else {
-				$.messager.alert('提示','该考核记录或已存在！','info');
+				$.messager.alert('提示', '该考核记录或已存在！', 'info');
 			}
 		});
 	}
-	
+
 	//删除记录
-	function studentUnionDeleteMessages(){
-		var sNo=$('#classTree').tree('getSelected').text;//取到当前被操作的学生的学号
+	function studentUnionDeleteMessages() {
+		var sNo = $('#classTree').tree('getSelected').text;//取到当前被操作的学生的学号
 		var checked = $("#scoreGrid").datagrid("getChecked");
-		
-		if (checked == null||checked=="") {
+
+		if (checked == null || checked == "") {
 			$.messager.alert('提示', '请选择要操作的行!', 'info');
 			return;
 		}
@@ -161,8 +162,11 @@
 			qid += checked[i].qId + ","
 		}
 		qid += checked[length - 1].qId;
-		$.post("../studentUnionDeleteMessages",{sNo:sNo,qids:qid},function(data){
-			if(data==2){
+		$.post("../studentUnionDeleteMessages", {
+			sNo : sNo,
+			qids : qid
+		}, function(data) {
+			if (data == 2) {
 				$("#scoreGrid").datagrid('reload');
 				$.messager.show({
 					title : '提示',
@@ -170,8 +174,8 @@
 					timeout : 5000,
 					showType : 'slide'
 				});
-			}else{
-				$.messager.alert('提示','系统错误请重试！','info');	
+			} else {
+				$.messager.alert('提示', '系统错误请重试！', 'info');
 			}
 		});
 	}

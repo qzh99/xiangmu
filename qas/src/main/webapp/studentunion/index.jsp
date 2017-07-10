@@ -96,7 +96,7 @@
 	</div>
 	<div data-options="region:'east',split:true,collapsed:true,title:'帮助'" style="width:200px;padding:10px;"></div>
 	<div data-options="region:'south',border:false" style="height:40px;background:#A9FACD;padding:0px;">
-		<p class="copyright">源辰信息科技有限公司 &copy;<span> 版权所有</span></p>
+		<p class="copyright"> &copy;<span> 版权所有</span></p>
 	</div>
 	<div data-options="region:'center',title:'内容',tools:[{
 		iconCls:'icon-full',

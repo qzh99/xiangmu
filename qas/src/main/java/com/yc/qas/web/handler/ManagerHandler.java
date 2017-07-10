@@ -31,4 +31,35 @@ public class ManagerHandler {
 		}
 		return result;
 	}
+	
+	@RequestMapping("/managerChangePwd")
+	@ResponseBody
+	public int managerChangePwd(String newPwd, HttpSession session){
+		Manager manager = (Manager) session.getAttribute("currentuser");
+		int mId=manager.getmId();
+		System.out.println(newPwd);
+		int result=0;
+		if(managerService.managerChangePwd(newPwd, mId)){
+			result=1;
+		}
+		return result;
+	}
+	
+	@RequestMapping("/managerAddStudent")
+	@ResponseBody
+	public int managerAddStudent(int sNo,String sName,int classesId){
+		return managerService.managerAddStudent(sNo,sName,classesId);
+	}
+	
+	@RequestMapping("/managerAddTeacher")
+	@ResponseBody
+	public int managerAddTeacher(String tname){
+		return managerService.managerAddStudent(tname);
+	}
+	
+	@RequestMapping("/managerAddStudentUnion")
+	@ResponseBody
+	public int managerAddStudentUnion(String suname){
+		return managerService.managerAddStudentUnion(suname);
+	}
 }

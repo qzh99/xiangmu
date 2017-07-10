@@ -12,11 +12,76 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		sNo=#{param2}
 	</update>
 	<resultMap type="TreeNode" id="classResult">
-		<id property="id" column="classesId" />
+		<id property="id" column="cId" />
 		<result property="text" column="sNo" />
 
 	</resultMap>
 	<select id="selcetSIdByClassId" resultType="TreeNode" resultMap="classResult">
-		select * from student where classesId=#{id}
+		select * from student where cId=#{id}
 	</select>
+	
+	<select id="studentSelectAllAppraise" parameterType="int" resultMap="selectAllAppraiseResult">
+		select s.sNo,s.sName, q.qName,q.qScore,a.author,a.aTime
+		from student s,appraise a, Quantization q
+		where s.sno=a.sno and a.qid=q.qid and s.sno=#{studentSno}
+	</select>
+	<resultMap type="StudentSelectApprise" id="selectAllAppraiseResult">
+		<id property="sNo" column="sNo" />
+		<result property="sName" column="sName" />
+		<result property="qName" column="qName" />
+		<result property="qScore" column="qScore" />
+		<result property="author" column="author" />
+		<result property="aTime" column="aTime" />
+	</resultMap>
+	
+	<select id="studentSelectAllScore" parameterType="int" resultMap="selectAllScoreResult">
+		select st.sNo,st.sName,t.timName,sc.sgrade,sc.sauthor,sc.stime
+		from student st,score sc,timetable t
+		where st.sno=sc.sno and sc.timid=t.timId and st.sno=#{studentSno}
+	</select>
+	<resultMap type="StudentSelectScore" id="selectAllScoreResult">
+		<id property="sNo" column="sNo" />
+		<result property="sName" column="sName" />
+		<result property="timName" column="timName" />
+		<result property="sGrade" column="sGrade" />
+		<result property="sAuthor" column="sAuthor" />
+		<result property="sTime" column="sTime" />
+	</resultMap>
+	
+	<select id="studentFinalRank"  parameterType="int"  resultMap="studentFinalRank">
+		<!-- select  e.sno,sname,sums,avgs from 
+  		(select d.sno,sname,sums,classesid from (select sno,sum(qscore) sums from appraise a,Quantization b where a.qid=b.qid group by sno)c right join student d on c.sno=d.sno
+  	 	where  classesid=(select classesId from student where sno=#{param1} )) e left join
+ 		 (select sno,avg(sgrade) avgs from score group by sno) f on e.sno=f.sno -->
+ 		<!--  select  e.sno,sname,sums,avgs from 
+      (select d.sno,sname,sums,classesid from (select sno,sum(qscore) sums from appraise a,Quantization b where a.qid=b.qid group by sno )c right join student d on c.sno=d.sno
+       where  classesid=(select classesId from student where sno=#{param1} )) e left join
+ 		 (select sno,avg(sgrade) avgs from score group by sno ) f on e.sno=f.sno order by (avgs+sums) desc -->
+ 		select  e.sno,sname,nvl(sums,0)+40 fsums,nvl(avgs,0) favgs ,(0.3*(nvl(sums,0)+40)+0.7*nvl(avgs,0)) total from 
+      (select d.sno,sname,sums,cId from (select sno,sum(qscore) sums from appraise a,Quantization b where a.qid=b.qid group by sno )c right join student d on c.sno=d.sno
+       where  cId=(select cId from student where sno=#{param1} )) e left join
+ 		 (select sno,avg(sgrade) avgs from score group by sno ) f on e.sno=f.sno order by total desc
+	
+	</select>
+	<resultMap type="StudentFinalRank" id="studentFinalRank">
+		<id property="sNo" column="sno"/>
+		<result property="sName" column="sname"/>
+		<result property="stuAppraise" column="fsums"/>
+		<result property="stuScore" column="favgs"/>
+		<result property="totals" column="total"/>
+	</resultMap>
+	
+	<select id="managerSelectAllStudnet" resultMap="managerSelectAllStudnetMap">
+		select * from student
+	</select>
+	<resultMap type="Student" id="managerSelectAllStudnetMap">
+		<id property="sNo" column="sNo"/>
+		<result property="sName" column="sName"/>
+		<result property="cId" column="cId"/>
+		<result property="sPwd" column="sPwd"/>
+	</resultMap>
+	
+	<insert id="managerAddStudent">
+	insert into student(sno,sname,cid,spwd,semail,timid) values(#{param1},#{param2},#{param3},'10470c3b4b1fed12c3baac014be15fac67c6e815','','')
+	</insert>
 </mapper>

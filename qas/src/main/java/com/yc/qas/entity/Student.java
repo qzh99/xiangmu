@@ -3,7 +3,7 @@ package com.yc.qas.entity;
 public class Student {
 	private int sNo;
 	private String sName;
-	private Integer cId;
+	private int classesId;
 	private String sPwd;
 	private String sEmail;
 	private String timId;
@@ -33,12 +33,12 @@ public class Student {
 		this.sName = sName;
 	}
 
-	public Integer getcId() {
-		return cId;
+	public int getClassesId() {
+		return classesId;
 	}
 
-	public void setcId(Integer cId) {
-		this.cId = cId;
+	public void setClassesId(int classesId) {
+		this.classesId = classesId;
 	}
 
 	public String getsPwd() {
@@ -67,9 +67,9 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [sNo=" + sNo + ", sName=" + sName + ", cId=" + cId
-				+ ", sPwd=" + sPwd + ", sEmail=" + sEmail + ", timId=" + timId
-				+ "]";
+		return "Student [sNo=" + sNo + ", sName=" + sName + ", classesId="
+				+ classesId + ", sPwd=" + sPwd + ", sEmail=" + sEmail
+				+ ", timId=" + timId + "]";
 	}
 
 }

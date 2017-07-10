@@ -5,7 +5,7 @@ public class StudentScore {
 	private String sName;
 	private int timId;
 	private String timName;
-	private int sGrade;
+	private float sGrade;
 
 	public int getsNo() {
 		return sNo;
@@ -39,11 +39,11 @@ public class StudentScore {
 		this.timName = timName;
 	}
 
-	public int getsGrade() {
+	public float getsGrade() {
 		return sGrade;
 	}
 
-	public void setsGrade(int sGrade) {
+	public void setsGrade(float sGrade) {
 		this.sGrade = sGrade;
 	}
 

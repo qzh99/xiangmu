@@ -7,6 +7,6 @@ import com.yc.qas.entity.StudentAppraise;
 public interface AppraiseAndStudentMapper {
 
 
-	List<StudentAppraise> selectStudnetAppraiseBySno(int id);
+	List<StudentAppraise> selectStudnetAppraiseBySno(int sNo);
 
 }

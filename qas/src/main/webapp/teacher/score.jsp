@@ -10,12 +10,16 @@
 		data-options="iconCls:'icon-save',plain:true" style="float: left;">保存</a>
 </div>
 <script type="text/javascript">
+	var teacherId = $("#teacherId").val();
+	var name = $("#teacherName").val();
+	
 	var editIndex = undefined;
 	$('#scoreId').datagrid(
 			{
-				url : '../selcetStuByClassId?id='
+				url : '../selcetStuByClassId?classId='
 						+ $('#index_menu_tree').tree('getSelected').id,
 				method : 'get',
+				queryParams:{teacherId:teacherId},
 				fit : true,
 				onClickCell : onClickCell,
 				pagination : true,
@@ -53,10 +57,17 @@
 			});
 	function teacherAddScore() {
 		$('#scoreId').datagrid('endEdit', editIndex);//结束正在被编辑的行数据
+		var checked=$('#scoreId').datagrid("getChanges");
+		if(checked==null||checked==""){
+			$.messager.alert('提示', '请选择要操作的行!', 'info');
+			return;
+		}
 		$.post("../teacherAddScore", {
-			scores: JSON.stringify($('#scoreId').datagrid("getChanges"))
+			tacherName:name,
+			scores : JSON.stringify(checked)
 		}, function(data) {
-			if (data > 0) {
+			if (data != 0) {
+				$('#scoreId').datagrid('reload');
 				$.messager.show({
 					title : '提示',
 					msg : '打分成功',
@@ -64,7 +75,6 @@
 					showType : 'slide'
 				});
 			}
-			$('#scoreId').datagrid('reload');
 		});
 	}
 

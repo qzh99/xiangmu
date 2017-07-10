@@ -29,7 +29,7 @@ public class QuantizationServiceImpl implements QuantizationService {
 		PageInfo<Quantization> pageinfo= new PageInfo<Quantization>(list);//获取分页信息
 		
 		EUDataGridList<Quantization> data=new EUDataGridList<Quantization>();
-		data.setTotal(Long.signum(pageinfo.getTotal()));
+		data.setTotal(pageinfo.getTotal());
 		data.setRows(list);
 		return data;
 	}
@@ -60,15 +60,12 @@ public class QuantizationServiceImpl implements QuantizationService {
 		for(int i=0;i<j;i++){
 			list [i]=Integer.parseInt(li[i]);
 		}
-		
 		int result=quantizationMapper.deleteQuantization(list);
-		
 		return result;
 	}
 
 	@Override
 	public int insertQuantization(String name, float score) {
-		
 		return quantizationMapper.insertQuantization( name,  score);
 	}
 
